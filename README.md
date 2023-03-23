@@ -1,6 +1,6 @@
 # Tercera tarea de APA 2023: Multiplicaciones de vectores y ortogonalidad
 
-## Nom i cognoms
+## Nom i cognoms Àlex Mata Barrero
 
 El fichero `algebra/vectores.py` incluye la definición de la clase `Vector` con los
 métodos desarrollados en clase, que incluyen la construcción, representación y
