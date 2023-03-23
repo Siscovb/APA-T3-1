@@ -2,6 +2,7 @@
     Tercera tarea de APA - manejo de vectores
 
     Nombre y apellidos:
+    Albert Giménez
 """
 
 class Vector:
