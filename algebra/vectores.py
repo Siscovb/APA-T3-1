@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: PAU PERÁLVAREZ CASASAMPERE
 """
 
 class Vector:
