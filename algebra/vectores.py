@@ -1,8 +1,26 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
-"""
+    Nombre y apellidos: Àlex Mata Barrero
+
+    >>> Vector([1, 2, 3]) * 2
+    Vector([2, 4, 6])
+
+    >>> 2 * Vector([1, 2, 3])
+    Vector([2, 4, 6])
+
+    >>> Vector([1, 2, 3]) * Vector([4, 5, 6])
+    Vector([4, 10, 18])
+
+    >>> Vector([1, 2, 3]) @ Vector([4, 5, 6])
+    32
+
+    >>> Vector([2, 4, 8]) / Vector([1, 2, 4])
+    Vector([2.0, 2.0, 2.0])
+
+""" 
+
+import math
 
 class Vector:
     """
@@ -85,3 +103,45 @@ class Vector:
 
         return -self + other
 
+    def __mul__(self, other):
+        """
+        Multiplica del vector con otro vector o con una constante
+        """
+
+        if isinstance(other, (int, float, complex)):
+            return Vector(uno * other for uno in self)
+        else:
+            return Vector(uno * otro for uno, otro in zip(self, other))
+        
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Devuelve el producto escalar de dos vectores
+        """
+
+        return sum(uno * otro for uno, otro in zip(self, other))
+    
+    __rmatmul__ = __matmul__
+
+    def __truediv__(self, other):
+        """
+        """
+        
+        if isinstance(other, (int, float, complex)):
+            return Vector(uno / other for uno in self)
+        else:
+            return Vector(uno / otro for uno, otro in zip(self, other))
+        
+    __rtruediv__ = __truediv__
+
+    def __floordiv__(self, other):
+        """
+        Devuelve la componente tangencial
+        """
+
+        return ((self * other)/(math.sqrt(sum(item**2 for item in other))**2))*other
+    
+
+import doctest
+doctest.testmod()
