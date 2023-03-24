@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Joan Marc Fuentes Soler
 """
 
 class Vector:
@@ -10,7 +10,7 @@ class Vector:
     """
     def __init__(self, iterable):
         """
-        Costructor de la clase Vector. Su único argumento es un iterable con las componentes del vector.
+        Constructor de la clase Vector. Su único argumento es un iterable con las componentes del vector.
         """
 
         self.vector = [valor for valor in iterable]
