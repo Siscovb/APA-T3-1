@@ -140,7 +140,7 @@ class Vector:
         Devuelve la componente tangencial
         """
 
-        return ((self * other)/(math.sqrt(sum(item**2 for item in other))**2))*other
+        return ((self * other)/(sum(item**2 for item in other))**2)*other
     
 
 import doctest
