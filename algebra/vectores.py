@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: RAfael A. Echevarria Silva
 """
 
 class Vector:
@@ -85,3 +85,18 @@ class Vector:
 
         return -self + other
 
+    def __mul__(self, other):
+        """
+        Multiplicación de los elementos de dos vectores, o de un vector * un escalar.
+        """
+        if isinstance(other, Vector):
+            return Vector([a * b for a, b in zip(self.data, other.data)])
+        elif isinstance(other, (int, float, complex)):
+            return Vector([other * x for x in self.data])
+
+
+    def __rmul__(self, other):
+        """
+        
+        """
+        return self.__mul__(other)
