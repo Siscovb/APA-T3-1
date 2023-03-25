@@ -100,3 +100,10 @@ class Vector:
         
         """
         return self.__mul__(other)
+    
+    def __matmul__(self, other):
+        if isinstance(other, Vector):
+           return sum([a * b for a, b in zip(self, other)])
+        
+    def __rmatmul__(self, other):
+        return self.__matmul__(other)
