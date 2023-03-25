@@ -100,26 +100,26 @@ class Vector:
 
     def __floordiv__(self, other):
         """
-        Función para calcular la componente tangencial(paralela) de un vector
+        Función para calcular la componente tangencial(paralela) dos vectores
         """
         return ((self @ other ) / (other @ other)) * other 
     
     def __rfloordiv__(self, other):
         """
-        Función para calcular la componente tangencial(paralela) de un vector
+        Función para calcular la componente tangencial(paralela) dos vectores
 
         """
         return ((other @ self ) / (self @ self)) * self
     
     def __mod__(self, other):
         """
-        Función para calcular la componente normal(perpendicular) de un vector
+        Función para calcular la componente normal(perpendicular) dos vectores
         """
         return self - (self // other)
 
     def __rmod__(self, other):
         """
-        Función para calcular la componente normal(perpendicular) de un vector
+        Función para calcular la componente normal(perpendicular) dos vectores
         """
         return other - (other // self)
     
