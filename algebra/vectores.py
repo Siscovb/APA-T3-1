@@ -74,44 +74,56 @@ class Vector:
         """
         return -self + other
 
+
     def __mul__(self, other):
         """
         Función para multiplicar un vector con otro vector o numero
         """
-        ...
+        if isinstance(other,(int,float,complex)):
+            return Vector([valor * other for valor in self])
+        else:
+            return Vector([valor * other for valor, other in zip(self, other)])
     
-    __rmul__ = __mul__ # Se puede hacer esta igualación porque la multiplicacion es comutativa 2x1 = 1x2
-    
+    __rmul__ = __mul__
+ 
     def __matmul__(self,other):
         """
-        Función para multiplicar un vector con otro vector o numero
+        Función para calcular el producto escalar de dos vectores
         """
-        ...
+        v = Vector([valor * other for valor, other in zip(self, other)])
+        escalar = 0
+        for i in range(len(v)):
+            escalar += v[i]
+        return escalar 
 
-    def __floordiv__(self,other):
-        """
-        Función para calcular la componente tangencial(paralela) de dos vectores
-        """
-        ...
+    __rmatmul__ = __matmul__ 
 
-    def __rfloordiv__(self,other):
+    def __floordiv__(self, other):
         """
-        Función para calcular la componente tangencial(paralela) de dos vectores
+        Función para calcular la componente tangencial(paralela) de un vector
         """
-        ...
+        return ((self @ other ) / (other @ other)) * other 
+    
+    def __rfloordiv__(self, other):
+        """
+        Función para calcular la componente tangencial(paralela) de un vector
+
+        """
+        return ((other @ self ) / (self @ self)) * self
     
     def __mod__(self, other):
         """
-        Función para calcular la componente normal(perpendicular) de dos vectores
+        Función para calcular la componente normal(perpendicular) de un vector
         """
-        ...
-    
+        return self - (self // other)
+
     def __rmod__(self, other):
         """
-        Función para calcular la componente normal(perpendicular) de dos vectores
+        Función para calcular la componente normal(perpendicular) de un vector
         """
-        ...
+        return other - (other // self)
     
+     
 import doctest
 doctest.testmod()
 
