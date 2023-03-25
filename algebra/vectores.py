@@ -27,9 +27,7 @@
     Test 6:
         >>> Vector([2, 1, 2]) % Vector([0.5, 1, 0.5])
         Vector([1.0, -1.0, 1.0])
-
 """
-
 class Vector:
     """
     Clase usada para trabajar con vectores sencillos
@@ -100,7 +98,6 @@ class Vector:
         """
         return -self + other
 
-
     def __mul__(self, other):
         """
         Función para multiplicar un vector con otro vector o numero
@@ -148,8 +145,7 @@ class Vector:
         Función para calcular la componente normal(perpendicular) dos vectores
         """
         return other - (other // self)
-    
-     
+        
 import doctest
 doctest.testmod()
 
