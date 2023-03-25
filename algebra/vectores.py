@@ -1,7 +1,33 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos: Joan Marc Fuentes Soler
+    Nombre y apellidos: Joan Marc Fuentes Soler 
+
+    Tests unitarios:
+    Test 1:
+    >>> Vector([1, 2, 3]) *2 
+    Vector([2, 4, 6])
+
+    Test 2: 
+    >>> 2 * Vector([1, 2, 3])
+    Vector([2, 4, 6])
+
+    Test 3: 
+    >>> Vector([1, 2, 3]) * Vector([4, 5, 6])
+    Vector([4, 10, 18])
+
+    Test 4:
+    >>> Vector([1, 2, 3]) @ Vector([4, 5, 6])
+    32
+
+    Test 5:
+    >>> Vector([2, 1, 2]) // Vector([0.5, 1, 0.5])
+    Vector([1.0, 2.0, 1.0])
+
+    Test 6:
+    >>> Vector([2, 1, 2]) % Vector([0.5, 1, 0.5])
+    Vector([1.0, -1.0, 1.0])
+
 """
 
 class Vector:
