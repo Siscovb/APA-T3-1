@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Gerard Escardó Cabrerizo
 """
 
 class Vector:
@@ -84,4 +84,21 @@ class Vector:
         """
 
         return -self + other
+    
+   
+    def __mul__(self, other):
+        """
+        Multiplica dos vectores, elemento a elemento, por otro vector (Producto de Hadamard).
+        """
+        
+        return Vector([uno * other for uno in self])
+    
 
+    def __rmul__(self, other):
+        """
+        Método reflejado de la multiplicación, usado cuando un elemento no pertenece a la clase Vector.
+        Multiplicación de un vector por un escalar.
+        """
+        
+        return Vector([uno * otro for uno, otro in zip(self, other)])
+            
