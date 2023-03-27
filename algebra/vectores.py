@@ -107,3 +107,16 @@ class Vector:
         
     def __rmatmul__(self, other):
         return self.__matmul__(other)
+    
+    def __floordiv__(self, other):
+        """
+        
+        """     
+        if isinstance(other, Vector):
+            magnitud_self = sum([x ** 2 for x in self]) ** 0.5
+            magnitud_other = sum([x ** 2 for x in other]) ** 0.5
+            producto_punto = sum([a * b for a, b in zip(self, other)])
+            return Vector([producto_punto / (magnitud_self * magnitud_other) * x for x in other])
+        elif isinstance(other, (int, float, complex)):
+            magnitud = sum([x ** 2 for x in self]) ** 0.5
+            return Vector([other * x / magnitud for x in self])
