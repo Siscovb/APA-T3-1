@@ -89,8 +89,9 @@ class Vector:
     def __mul__(self, other):
         """
         Multiplica dos vectores, elemento a elemento, por otro vector (Producto de Hadamard).
+        >>> __mul__(v1 = Vector([1, 2, 3]), v2 = Vector([4, 5, 6]))
+        Vector([2, 4, 6])
         """
-        
         return Vector([uno * other for uno in self])
     
 
@@ -98,6 +99,8 @@ class Vector:
         """
         Método reflejado de la multiplicación, usado cuando un elemento no pertenece a la clase Vector.
         Multiplicación de un vector por un escalar.
+        >>> __rmul__(v1 = Vector([1, 2, 3]), v2 = Vector([4, 5, 6]))
+        Vector([4, 10, 18])
         """
         
         return Vector([uno * otro for uno, otro in zip(self, other)])
