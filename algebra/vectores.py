@@ -1,8 +1,9 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: POL SEDÓ MOTA
 """
+import doctest 
 
 class Vector:
     """
@@ -84,4 +85,81 @@ class Vector:
         """
 
         return -self + other
+
+    def __mul__(self,other):
+        """
+        Metodo operador * de multiplicacion de dos vectores
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        >>> v1 * v2 
+        Vector([4, 10, 18])
+        """
+        if isinstance(other, (int, float)):
+            return  Vector( [self[i] * other for i in range(len(self))])
+        else:
+            return  Vector( [self[i] * other[i] for i in range(len(self))])
+        
+    
+    __rmul__ = __mul__
+
+    def __matmul__(self,other):
+        """
+        Metodo operador @ de producto escalar
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        """
+        return sum([self[i] * other[i] for i in range(len(self))])
+    
+    __rmatmul__ = __matmul__
+
+    
+    def __truediv__(self, other):
+        """
+        Dividir el vector por un escalar
+        """
+        return [self[i] / other for i in range(len(self))]
+    
+    def __abs__(self):
+        valor = 0
+        for num in self:
+            valor += num ** 2
+        return (valor ** 0.5)
+
+    
+    def __floordiv__(self, other):
+        """
+        obtener la componente tangencial del vector v1 (self)
+        >>> vt1 = Vector([2, 1, 2])
+        >>> vt2 = Vector([0.5, 1, 0.5])
+        >>> vt1 // vt2
+        Vector([1.0, 2.0, 1.0])
+        """
+
+        num =  self @ other
+        den = other @ other
+        tengencial=(num / den) * other
+        
+
+        return tengencial 
+    
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        obtener la componente normal del vector v1 (self)
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+
+        return (self - (self // other))
+    
+    __rmod__ = __mod__
+
+doctest.testmod()
 
