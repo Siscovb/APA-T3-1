@@ -76,8 +76,8 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
-<img src="test1.png" alt="Resultados obtenidos y  esperados">
-<img src="test2.png" alt = "Tests unitarios pasados">
+<img src = "test1.png" alt = "Resultados obtenidos y  esperados" width = "250">
+<img src = "test2.png" alt = "Tests unitarios pasados" width = "250">
 
 
 #### Código desarrollado
@@ -174,7 +174,7 @@ class Vector:
 
         return -self + other
    
-   #entrega:
+   #ENTREGA:
     def __mul__(self, other):
         """
         Producto Hadamard o multiplicación por escalar
@@ -208,7 +208,7 @@ class Vector:
     
     __rmatmul__ = __matmul__
 
-    def __truediv__ (self, other): #auxiliar para poder dividir
+    def __truediv__ (self, other): #operador para poder dividir
         """
         División de un vector por un escalar
         """

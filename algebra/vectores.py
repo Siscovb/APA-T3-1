@@ -85,7 +85,7 @@ class Vector:
 
         return -self + other
    
-   #entrega:
+   #ENTREGA:
     def __mul__(self, other):
         """
         Producto Hadamard o multiplicación por escalar
@@ -119,7 +119,7 @@ class Vector:
     
     __rmatmul__ = __matmul__
 
-    def __truediv__ (self, other): #auxiliar para poder dividir
+    def __truediv__ (self, other): #operador para poder dividir
         """
         División de un vector por un escalar
         """
