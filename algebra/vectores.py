@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos: Kirian Rodriguez Alonso
+    Nombre y apellidos: Kirian Rodríguez Alonso
 """
 
 class Vector:
@@ -89,6 +89,12 @@ class Vector:
     def __mul__(self, other):
         """
         Multiplica vector con vector o numero
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1*v2
+        Vector([4, 10, 18])
+        >>> v1*2
+        Vector([2, 4, 6])
         """
 
         if isinstance(other,(int, float, complex)):
@@ -102,6 +108,10 @@ class Vector:
     def __matmul__(self, other):
         """
         Calculo producto escalar de 2 vectores
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1@v2
+        32
         """
         prod_escalar= Vector([valor * otro for valor, otro in zip(self, other)])
         return prod_escalar
@@ -112,6 +122,10 @@ class Vector:
     def __floordiv__(self, other):
         """
         Calcula componente tangencial
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1//v2
+        Vector([1.0, 2.0, 1.0])
         """
         return ((self @ other) / (other @ other)) * other
     
@@ -121,6 +135,10 @@ class Vector:
     def __mod__(self, other):
         """
         Calcula componente normal
+         >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1%v2
+        Vector([1.0, -1.0, 1.0])
         """
         return self - (self // other)
     
