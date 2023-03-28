@@ -1,6 +1,6 @@
 # Tercera tarea de APA 2023: Multiplicaciones de vectores y ortogonalidad
 
-## Nom i cognoms
+## Nom i cognoms Ada Salvador Avalos
 
 El fichero `algebra/vectores.py` incluye la definición de la clase `Vector` con los
 métodos desarrollados en clase, que incluyen la construcción, representación y
@@ -76,11 +76,117 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
+<img src="testunitario.png" width="640" align="center">
+
 #### Código desarrollado
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
 vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
+
+```python
+    def __mul__(self, other) :
+        """
+        Multiplicación de los elementos de dos vectores (Hadamard) o de un vector por un escalar.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        """
+        if isinstance(other, (int, float, complex)):
+            return Vector(uno * other for uno in self)
+        else:
+            return Vector(uno * otro for uno, otro in zip(self, other))
+        
+    def __rmul__(self,other) :
+        """
+        Multiplicación de los elementos de dos vectores (Hadamard) o de un vector por un escalar.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v2 * v1
+        Vector([4, 10, 18])
+        >>> 2 * v1 
+        Vector([2, 4, 6])
+        """
+        return self.__mul__(other)
+    
+
+    def __matmul__(self, other) :
+        """
+        Producto escalar de dos vectores.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        """
+
+        return  sum(self * other)  
+    
+
+
+    # Es superflua dado que es una operación entre dos Vector()
+    # def __rmatmul__(self,other) :
+    #     """
+    #     Producto escalar de dos vectores.
+    #     Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+    #     >>> v1 = Vector([1, 2, 3])
+    #     >>> v2 = Vector([4, 5, 6])
+    #     >>> v2 @ v1
+    #     32
+    #     """
+    #     return self.__matmul__(other) 
+
+
+
+    def __floordiv__(self, other) :
+        """
+        Obtención de las componentes tangenciales (paralela) de un vector respecto a otro.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        """
+        return  (self @ other) // ((other @ other)**0.5 )* other
+    
+
+
+    # Es superflua dado que es una operación entre dos Vector()
+    # def __rfloordiv__(self,other) :
+    #     return self.__floordiv__(other) 
+
+
+    
+    def __mod__(self, other) :
+        """
+        Obtención de las componentes normales (perpendicular) de un vector respecto a otro.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+
+        return self - self//other
+    
+
+
+    # Es superflua dado que es una operación entre dos Vector()
+    # def __rmod__(self,other) :
+    #     return other.__mod__(self) 
+
+
+
+import doctest
+doctest.testmod()
+
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 

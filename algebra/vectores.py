@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Ada Salvador Avalos
 """
 
 class Vector:
@@ -85,3 +85,102 @@ class Vector:
 
         return -self + other
 
+    def __mul__(self, other) :
+        """
+        Multiplicación de los elementos de dos vectores (Hadamard) o de un vector por un escalar.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        """
+        if isinstance(other, (int, float, complex)):
+            return Vector(uno * other for uno in self)
+        else:
+            return Vector(uno * otro for uno, otro in zip(self, other))
+        
+    def __rmul__(self,other) :
+        """
+        Multiplicación de los elementos de dos vectores (Hadamard) o de un vector por un escalar.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v2 * v1
+        Vector([4, 10, 18])
+        >>> 2 * v1 
+        Vector([2, 4, 6])
+        """
+        return self.__mul__(other)
+    
+
+    def __matmul__(self, other) :
+        """
+        Producto escalar de dos vectores.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        """
+
+        return  sum(self * other)  
+    
+
+
+    # Es superflua dado que es una operación entre dos Vector()
+    # def __rmatmul__(self,other) :
+    #     """
+    #     Producto escalar de dos vectores.
+    #     Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+    #     >>> v1 = Vector([1, 2, 3])
+    #     >>> v2 = Vector([4, 5, 6])
+    #     >>> v2 @ v1
+    #     32
+    #     """
+    #     return self.__matmul__(other) 
+
+
+
+    def __floordiv__(self, other) :
+        """
+        Obtención de las componentes tangenciales (paralela) de un vector respecto a otro.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        """
+        return  (self @ other) // ((other @ other)**0.5 )* other
+    
+
+
+    # Es superflua dado que es una operación entre dos Vector()
+    # def __rfloordiv__(self,other) :
+    #     return self.__floordiv__(other) 
+
+
+    
+    def __mod__(self, other) :
+        """
+        Obtención de las componentes normales (perpendicular) de un vector respecto a otro.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+
+        return self - self//other
+    
+
+
+    # Es superflua dado que es una operación entre dos Vector()
+    # def __rmod__(self,other) :
+    #     return other.__mod__(self) 
+
+
+
+import doctest
+doctest.testmod()
