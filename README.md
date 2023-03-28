@@ -80,7 +80,104 @@ resultado de la ejecución de los tests unitarios.
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
-vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*). 
+<br> <br>
+
+## MÉTODOS NUEVOS:
+### Argumentos utilizados <br>
+self --> Es el propio vector (él mismo). <br>
+other --> Es otro vector realizando la propia operación.
+
+### Método __mul__:
+```c
+def __mul__(self, other):
+        '''
+        Funcion para multiplicar un vector con otro vector o vector por escalar
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+        '''
+        if isinstance(other,(int, float, complex)):
+            return Vector([valor * other for valor in self])
+        else:
+            return Vector([valor * other for valor, other in zip(self, other)])
+
+    __rmul__ = __mul__
+```
+
+### Método __matmul__:
+```c
+    def __matmul__(self, other):
+        '''
+        Funcion para calcular el producto escalar de dos vectores
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        '''
+        v = Vector([valor * otro for valor, otro in zip(self, other)])
+        pr_escalar = 0
+        for i in range(len(v)):
+            pr_escalar += v[i]
+        return pr_escalar
+
+    __rmatmul__ = __matmul__
+```
+
+### Método __floordiv__:
+```c
+    def __floordiv__(self, other):
+        '''
+        Función para calcular la componente tangencial de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        '''
+        return ((self @ other) / (other @ other)) * other
+```
+
+### Método __rfloordiv__:
+```c
+    def __rfloordiv__(self, other):
+        '''
+        Función para calcular la componente tangencial de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        '''
+        return ((other @ self) / (self @ self)) * self
+```
+
+### Método __mod__:
+```c
+def __mod__(self, other):
+        '''
+        Función para calcular la componente normal de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        '''
+        return self - (self // other)
+```
+
+### Método __rmod__:
+```c
+    def __rmod__(self, other):
+        '''
+        Función para calcular la componente normal de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        '''
+        return other - (other // self)
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 
