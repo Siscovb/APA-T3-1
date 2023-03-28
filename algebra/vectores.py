@@ -153,7 +153,7 @@ class Vector:
     
     def __rmod__(self, other):
         """
-       Método reflehado de obtención de componente normal
+       Método reflejado de obtención de componente normal
         """
         return other.mod(self)
     
