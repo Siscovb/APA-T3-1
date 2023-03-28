@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Oriol Garcia Vila
 """
 import doctest
 class Vector:
@@ -112,7 +112,10 @@ class Vector:
         >>> v1 @ v2
         32
         """
-        return sum(self[i] * other[i] for i in range(0, len(self)))
+        if len(self) != len(other):
+            print('Los vectores tienen que tener el mismo tamaño')
+        else:
+            return sum(self[i] * other[i] for i in range(0, len(self)))
     
     __rmatmul__ = __matmul__
 
@@ -122,7 +125,7 @@ class Vector:
         """
         return (self[i] / other for i in range(0,len(self)))
     
-    def __abs__(self):
+    def __abs__(self): #Modul
         valor = 0
         for num in self:
             valor += num**2
@@ -136,12 +139,8 @@ class Vector:
         >>> v1 // v2
         Vector([1.0, 2.0, 1.0])
         """
-
-        num =  self @ other
-        den = other @ other 
-        tan = Vector(other * (num // den))
         
-        return tan
+        return Vector(other * ((self @ other) / (other @ other)))
 
     __rfloordiv__ = __floordiv__
 
