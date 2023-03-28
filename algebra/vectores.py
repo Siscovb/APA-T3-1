@@ -103,7 +103,7 @@ class Vector:
         if isinstance(other,(int, float, complex)):
             return Vector([valor * other for valor in self])
         else:
-            return Vector([valor * otro for valor, otro in zip(self, other)])
+            return Vector([valor * other for valor, other in zip(self, other)])
 
     __rmul__ = __mul__
 
