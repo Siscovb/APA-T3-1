@@ -1,9 +1,9 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Oriol Garcia Vila
 """
-
+import doctest
 class Vector:
     """
     Clase usada para trabajar con vectores sencillos
@@ -84,4 +84,76 @@ class Vector:
         """
 
         return -self + other
+   
+   #ENTREGA:
+    def __mul__(self, other):
+        """
+        Producto Hadamard o multiplicación por escalar
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+        """
+        if isinstance(other, (int, float, complex)):
+            return Vector(self[i] * other for i in range(0, len(self)))
+        else:
+            return Vector(self[i] * other[i] for i in range(0, len(self)))
 
+    
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Multiplicación matricial
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        """
+        if len(self) != len(other):
+            print('Los vectores tienen que tener el mismo tamaño')
+        else:
+            return sum(self[i] * other[i] for i in range(0, len(self)))
+    
+    __rmatmul__ = __matmul__
+
+    def __truediv__ (self, other): #operador para poder dividir
+        """
+        División de un vector por un escalar
+        """
+        return (self[i] / other for i in range(0,len(self)))
+    
+    def __abs__(self): #Modul
+        valor = 0
+        for num in self:
+            valor += num**2
+        return (valor**0.5)
+    
+    def __floordiv__(self,other):
+        """
+        Devuelve la componente la tangencial del primer vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        """
+        
+        return Vector(other * ((self @ other) / (other @ other)))
+
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Devuelve la componente normal del primer vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+        return (self - (self // other))
+    
+    __rmod__ = __mod__
+
+doctest.testmod()
