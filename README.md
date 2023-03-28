@@ -76,11 +76,114 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
+- Resultado de los tests unitarios:
+<img src="tests/test1.png" width="480" align="center">
+<img src="tests/test2.png" width="480" align="center">
+<img src="tests/test3.png" width="480" align="center">
+
+
 #### Código desarrollado
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
 vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
+- Multiplicación de los elementos de dos vectores (Hadamard) o de un vector por un escalar
+
+Para el operdor asterisco he realizado el siguiente código:
+```python
+def __mul__(self, other):
+        """
+        Multiplicación Hadamard o multiplicación de vector por escalar
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+        """
+        if isinstance(other, (int, float, complex)): # Para añadir método a '*'
+            return Vector(uno * other for uno in self)
+        else:
+            return Vector(uno * otro for uno, otro in zip(self, other))
+    
+    def __rmul__(self, other):
+        """
+        Método reflejado de la multiplicación Hadamard o multiplicación de vector por escalar
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> 2 * v1
+        Vector([2, 4, 6])
+        >>> v2 * v1
+        Vector([4, 10, 18])
+        """
+        return self.__mul__(other)
+```
+Para el operdor @ he realizado el siguiente código:
+```python
+ def __matmul__(self, other):
+        """
+        Producto escalar de dos vectores
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        """
+        if isinstance(other, Vector) and len(self): # Para añadir método a '@'
+            result = sum(x * y for x, y in zip(self, other))
+            return result
+        else:
+            return None
+        
+    __rmatmul__=__matmul__ #Método reflejado para el producto escalar
+```
+
+- Obtención de las componentes normal y paralela de un vector respecto a otro
+
+  Para obtener la componente paralela he realizado el siguiente código:
+```python
+def __floordiv__(self, other):
+        """
+       Obtención de componente tangencial
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        """
+        if isinstance(other, Vector) : # Para añadir método a '//'
+            return Vector([(sum(x * y for x, y in zip(self,other) )// (sum(x ** 2 for x in other) **0.5)) * y for  y in  other])
+        else:
+            return None
+    
+    def __rfloordiv__(self, other):
+        """
+       Método reflejado de obtención de componente tangencial
+        """
+        if isinstance(other, Vector) : # Para añadir método a '//'
+            return Vector([(other * y // (sum(x ** 2 for x in self) **0.5)) * y for  y in  self])
+        else:
+            return None
+```
+ Para obtener la componente perpendicular he realizado el siguiente código:
+ ```python
+ def __mod__(self, other):
+        """
+       Obtención de componente normal
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+        return self-self // other
+    
+    def __rmod__(self, other):
+        """
+       Método reflehado de obtención de componente normal
+        """
+        return other.mod(self)
+    
+ ```
+
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 
