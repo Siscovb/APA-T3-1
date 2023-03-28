@@ -76,11 +76,53 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
+<img src="Tests.PNG" align="center">
+
 #### Código desarrollado
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
 vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
+```python
+# Rafael A. Echevarria
+
+    def __mul__(self, other):
+        """
+        Multiplicación de los elementos de dos vectores (Hadamard) o de un vector por un escalar
+        """
+        if isinstance(other, Vector):
+            return Vector([a * b for a, b in zip(self, other)])
+        elif isinstance(other, (int, float, complex)):
+            return Vector([other * x for x in self])
+
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Método para implementar el producto escalar de dos vectores.
+        """
+        return sum([a * b for a, b in zip(self, other)])
+        
+    __rmatmul__ = __matmul__
+    
+    def __floordiv__(self, other):
+        """
+        Método para que devuelva la componente tangencial.
+        """     
+        return Vector([(sum(a * b for a, b in zip(self, other)) // (sum(a ** 2 for a in other) ** 0.5)) * b for b in other])
+
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Método para que devuelva la componente normal o perpendicular.
+        """
+        return self - self // other
+    
+    __rmod__ = __mod__
+
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 
