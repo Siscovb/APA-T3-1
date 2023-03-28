@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Oriol Garcia Moreiras
 """
 
 class Vector:
@@ -85,3 +85,83 @@ class Vector:
 
         return -self + other
 
+# MÉTODOS NUEVOS:
+# Argumentos utilizados
+# self --> Es el propio vector (él mismo).
+# other --> Es otro vector realizando la propia operación.
+
+    def __mul__(self, other):
+        '''
+        Funcion para multiplicar un vector con otro vector o vector por escalar
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+        '''
+        if isinstance(other,(int, float, complex)):
+            return Vector([valor * other for valor in self])
+        else:
+            return Vector([valor * otro for valor, otro in zip(self, other)])
+
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        '''
+        Funcion para calcular el producto escalar de dos vectores
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        '''
+        v = Vector([valor * otro for valor, otro in zip(self, other)])
+        pr_escalar = 0
+        for i in range(len(v)):
+            pr_escalar += v[i]
+        return pr_escalar
+
+    __rmatmul__ = __matmul__
+
+    def __floordiv__(self, other):
+        '''
+        Función para calcular la componente tangencial de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        '''
+        return ((self @ other) / (other @ other)) * other
+    
+    def __rfloordiv__(self, other):
+        '''
+        Función para calcular la componente tangencial de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        '''
+        return ((other @ self) / (self @ self)) * self
+
+    def __mod__(self, other):
+        '''
+        Función para calcular la componente normal de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        '''
+        return self - (self // other)
+    
+    def __rmod__(self, other):
+        '''
+        Función para calcular la componente normal de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        '''
+        return other - (other // self)
+    
+    import doctest
+    doctest.testmod()
