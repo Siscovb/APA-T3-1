@@ -1,7 +1,24 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Gerard Piqueras Codina
+
+    Tests unitarios:
+
+    >>> Vector([1, 2, 3]) * 2
+    Vector([4, 5, 6])
+
+    >>> 2 * Vector([1, 2, 3])
+    Vector([4, 5, 6])
+
+    >>> Vector([1, 2, 3]) * Vector([4, 5, 6])
+    Vector([4, 10, 18])
+
+    >>>  Vector([2, 1, 2]) // Vector([0.5, 1, 0.5])
+    Vector([1.0, 2.0, 1.0])
+
+    >>>  Vector([2, 1, 2]) % Vector([0.5, 1, 0.5])
+    Vector([1.0, -1.0, 1.0])
 """
 
 class Vector:
@@ -11,6 +28,7 @@ class Vector:
     def __init__(self, iterable):
         """
         Costructor de la clase Vector. Su único argumento es un iterable con las componentes del vector.
+
         """
 
         self.vector = [valor for valor in iterable]
@@ -84,4 +102,39 @@ class Vector:
         """
 
         return -self + other
+    
+    # Noves funcions 
 
+    def __mul__(self, other):
+        """
+        Implementar el producto de Hadamard
+        """
+        if isinstance(other, (int, float, complex)):
+            return Vector(uno * other for uno in self)
+        else:
+            return Vector(uno * otro for uno, otro in zip(self, other))
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Producto escalar de dos vectores
+        """
+        return sum(uno * otro for uno, otro in zip(self, other))
+    __rmatmul__ = __matmul__
+
+    def __floordiv__(self, other):
+        """
+        Devuelve la componente tangencial v1 ||
+        """
+        return ((self@other)/(other@other))*other
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Devuelve la componente normal v1 _|_
+        """
+        return self - (self // other)
+    __rmod__ = __mod__
+
+import doctest
+doctest.testmod()
