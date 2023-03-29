@@ -1,7 +1,31 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Kirian Rodríguez Alonso
+
+    >>> v1 = Vector([1, 2, 3])
+    >>> v2 = Vector([4, 5, 6])
+    >>> v1 * 2
+    Vector([2, 4, 6])
+    >>> v1 * v2
+    Vector([4, 10, 18])
+
+    >>> v1 = Vector([1, 2, 3])
+    >>> v2 = Vector([4, 5, 6])
+    >>> v1 @ v2
+    32
+
+    >>> v1 = Vector([2, 1, 2])
+    >>> v2 = Vector([0.5, 1, 0.5])
+    >>> v1 // v2
+    Vector([1.0, 2.0, 1.0])
+
+    >>> v1 = Vector([2, 1, 2])
+    >>> v2 = Vector([0.5, 1, 0.5])
+    >>> v1 % v2
+    Vector([1.0, -1.0, 1.0])
+
+
 """
 
 class Vector:
@@ -84,4 +108,53 @@ class Vector:
         """
 
         return -self + other
+
+    
+    def __mul__(self, other):
+        """
+        Multiplica vector con vector o numero
+            
+        """
+
+        if isinstance(other, (int, float)):
+            return  Vector( [self[i] * other for i in range(len(self))])
+        else:
+            return  Vector( [self[i] * other[i] for i in range(len(self))])
+        
+    
+    __rmul__ = __mul__
+
+
+    def __matmul__(self, other):
+        """
+        Calculo producto escalar de 2 vectores
+            
+        """
+        return sum([self[i] * other[i] for i in range(len(self))])
+
+    __rmatmul__ = __matmul__
+
+
+    def __floordiv__(self, other):
+        """
+        Calcula componente tangencial
+            
+        """
+        return ((self @ other) / (other @ other)) * other
+    
+    __rfloordiv__ = __floordiv__
+
+
+    def __mod__(self, other):
+        """
+        Calcula componente normal
+
+        """
+        return self - (self // other)
+    
+    __rmod__ = __mod__
+
+import doctest
+doctest.testmod()
+
 
