@@ -1,7 +1,26 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: RAfael A. Echevarria Silva
+
+    >>> Vector([1, 2, 3]) * 2
+    Vector([2, 4, 6])
+
+    >>> 2 * Vector([1, 2, 3])
+    Vector([2, 4, 6])
+
+    >>> Vector([1, 2, 3]) * Vector([4, 5, 6])
+    Vector([4, 10, 18])
+
+    >>> Vector([1, 2, 3]) @ Vector([4, 5, 6])
+    32
+
+    >>> Vector([2, 1, 2]) // Vector([0.5, 1, 0.5])
+    Vector([1.0, 2.0, 1.0])
+
+    >>> Vector([2, 1, 2]) % Vector([0.5, 1, 0.5])
+    Vector([1.0, -1.0, 1.0])
+
 """
 
 class Vector:
@@ -84,4 +103,44 @@ class Vector:
         """
 
         return -self + other
+    
+    #PRÁCTICA 03 
 
+    def __mul__(self, other):
+        """
+        Multiplicación de los elementos de dos vectores (Hadamard) o de un vector por un escalar
+        """
+        if isinstance(other, Vector):
+            return Vector([a * b for a, b in zip(self, other)])
+        elif isinstance(other, (int, float, complex)):
+            return Vector([other * x for x in self])
+
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Método para implementar el producto escalar de dos vectores.
+        """
+        return sum([a * b for a, b in zip(self, other)])
+        
+    __rmatmul__ = __matmul__
+    
+    def __floordiv__(self, other):
+        """
+        Método para que devuelva la componente tangencial.
+        """     
+        return Vector([(sum(a * b for a, b in zip(self, other)) // (sum(a ** 2 for a in other) ** 0.5)) * b for b in other])
+
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Método para que devuelva la componente normal o perpendicular.
+        """
+        return self - self // other
+    
+    __rmod__ = __mod__
+
+import doctest
+
+doctest.testmod()
