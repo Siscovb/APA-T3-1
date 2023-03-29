@@ -86,7 +86,7 @@ vale insertar una imagen o una captura de pantalla, debe hacerse en formato *mar
 
 
 ```python
-    def __mul__(self, other) :
+   def __mul__(self, other) :
         """
         Multiplicación de los elementos de dos vectores (Hadamard) o de un vector por un escalar.
         Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
@@ -101,7 +101,9 @@ vale insertar una imagen o una captura de pantalla, debe hacerse en formato *mar
             return Vector(uno * other for uno in self)
         else:
             return Vector(uno * otro for uno, otro in zip(self, other))
-        
+
+
+
     def __rmul__(self,other) :
         """
         Multiplicación de los elementos de dos vectores (Hadamard) o de un vector por un escalar.
@@ -115,6 +117,7 @@ vale insertar una imagen o una captura de pantalla, debe hacerse en formato *mar
         """
         return self.__mul__(other)
     
+
 
     def __matmul__(self, other) :
         """
@@ -130,17 +133,16 @@ vale insertar una imagen o una captura de pantalla, debe hacerse en formato *mar
     
 
 
-    # Es superflua dado que es una operación entre dos Vector()
-    # def __rmatmul__(self,other) :
-    #     """
-    #     Producto escalar de dos vectores.
-    #     Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
-    #     >>> v1 = Vector([1, 2, 3])
-    #     >>> v2 = Vector([4, 5, 6])
-    #     >>> v2 @ v1
-    #     32
-    #     """
-    #     return self.__matmul__(other) 
+    def __rmatmul__(self,other) :
+        """
+        Producto escalar de dos vectores.
+        Como argumentos uso self como él mismo y other como otro Vector realizando la operación.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v2 @ v1
+        32
+        """
+        return self.__matmul__(other) 
 
 
 
@@ -157,9 +159,8 @@ vale insertar una imagen o una captura de pantalla, debe hacerse en formato *mar
     
 
 
-    # Es superflua dado que es una operación entre dos Vector()
-    # def __rfloordiv__(self,other) :
-    #     return self.__floordiv__(other) 
+    def __rfloordiv__(self,other) :
+        return self.__floordiv__(other) 
 
 
     
@@ -177,9 +178,8 @@ vale insertar una imagen o una captura de pantalla, debe hacerse en formato *mar
     
 
 
-    # Es superflua dado que es una operación entre dos Vector()
-    # def __rmod__(self,other) :
-    #     return other.__mod__(self) 
+    def __rmod__(self,other) :
+        return other.__mod__(self) 
 
 
 
