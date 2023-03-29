@@ -1,6 +1,6 @@
 # Tercera tarea de APA 2023: Multiplicaciones de vectores y ortogonalidad
 
-## Nom i cognoms
+## Gisela León Pipó
 
 El fichero `algebra/vectores.py` incluye la definición de la clase `Vector` con los
 métodos desarrollados en clase, que incluyen la construcción, representación y
@@ -76,11 +76,98 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
+<img src="Captura1.png" width="400" align="center">   
+<img src="Captura2.png" width="400" align="center">   
+
 #### Código desarrollado
 
-Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
-comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
-vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los comandos necesarios para que se realice el realce sintáctico en Python del mismo (no vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
+### Multiplicación de los elementos de dos vectores o de un vector por un escalar
+```python
+# Multiplicación de los elementos de dos vectores  o de un vector por un escalar.
+    def __mul__(self, other):
+        """
+        Sobrecargar el operador * para implementar el producto de Hadamard 
+        o la multiplicación de un vector por un escalar.
+        """
+        
+        if isinstance(other, (int, float, complex)):
+             # Si other es un número, se multiplica cada componente del vector por ese número
+            return Vector(uno * other for uno in self)
+        else:
+            # Si other es otro vector, se realiza la multiplicación de elementos (Hadamard)
+            return Vector(uno * otro for uno, otro in zip(self, other)) 
+        
+    __rmul__ = __mul__
+    
+    def __matmul__(self, other):
+        """
+        Implementar el operador @ para el producto escalar de dos vectores
+        """
+        
+        return sum(uno * otro for uno, otro in zip(self, other))
+        
+        
+    __rmatmul__ = __matmul__
+```
+
+### Obtención de las componentes normal y paralela de un vector respecto a otro
+
+```python
+#Obtención de las componentes normal y paralela de un vector respecto a otro
+    def __floordiv__(self, other):
+        """
+        Implementar el operador // para que devuelva la componente tangencial
+        """
+        return Vector(((self @ other) / (other @ other)) * other)
+        
+        
+    __rfloordiv__ = __floordiv__
+        
+    def __mod__(self, other):
+        """
+        Implementar el operador % para que devuelva la componente normal        
+        """
+        return Vector(self - (self // other))
+
+      
+    __rmod__ = __mod__
+```
+
+### Pruebas unitarias
+```python
+"""
+Pruebas unitarias:
+    
+    >>> v1 = Vector([1, 2, 3])
+    >>> v2 = Vector([4, 5, 6])
+    
+    >>> v1 * v2
+    Vector([4, 10, 18])
+    
+    >>> v1 * 2
+    Vector([2, 4, 6])
+    
+    >>> v1 @ v2
+    32
+    
+    >>> v1 = Vector([2, 1, 2])
+    >>> v2 = Vector([0.5, 1, 0.5])
+    
+    >>> v1 // v2
+    Vector([1.0, 2.0, 1.0])
+    
+    >>> v1 % v2
+    Vector([1.0, -1.0, 1.0])
+"""
+```
+
+### Para implementar los tests
+```python
+import doctest
+doctest.testmod()
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 
