@@ -1,6 +1,6 @@
 # Tercera tarea de APA 2023: Multiplicaciones de vectores y ortogonalidad
 
-## Nom i cognoms
+## Nom i cognoms: Victor Ceballos Fouces
 
 El fichero `algebra/vectores.py` incluye la definición de la clase `Vector` con los
 métodos desarrollados en clase, que incluyen la construcción, representación y
@@ -76,11 +76,101 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
+![Doctest Passed](doctest_passed1.png)
+![Doctest Passed](doctest_passed2.png)
+
 #### Código desarrollado
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
 vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
+```python
+def __mul__(self, other):
+        """
+        Multiplica el vector por otro vector usando el producto de Hadamard, o por un escalar.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v3 = v1 * v2
+        >>> v3
+        Vector([4, 10, 18])
+        """
+        if isinstance(other, (int, float, complex)):
+            return Vector(uno * other for uno in self)
+        else:
+            return Vector(uno * otro for uno, otro in zip(self, other))
+
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Realiza el producto escalar entre dos vectores.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v3 = v1 @ v2
+        >>> v3
+        32
+        """
+        if not isinstance(other, Vector):
+            raise TypeError("El operando debe ser un objeto de la clase Vector")
+
+        if len(self) != len(other):
+            raise ValueError("Los vectores deben tener la misma longitud")
+
+        resultado = 0
+        for x, y in zip(self.vector, other.vector):
+            resultado += x * y
+
+        return resultado
+
+    __rmatmul__ = __matmul__ 
+
+    def __floordiv__(self, other):
+        """
+        Retorna la componente tangencial de self respecto a other.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v3 = v1 // v2
+        >>> v3
+        Vector([1.0, 2.0, 1.0])
+        """
+        if not isinstance(other, Vector):
+            raise TypeError("El argumento debe ser un vector.")
+
+        v1 = self
+        v2 = other
+        v2_norma_cuadrado = sum(componente ** 2 for componente in v2)
+        producto_escalar = sum(v1[i] * v2[i] for i in range(len(v1)))
+        tangencial = v2 * (producto_escalar / v2_norma_cuadrado)
+
+        return tangencial
+    
+    
+    def __mod__(self, other):
+        """
+        Devuelve la componente normal de v1 perpendicular a v2.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v3 = v1 % v2
+        >>> v3
+        Vector([1.0, -1.0, 1.0])
+        """
+        
+        if not isinstance(other, Vector):
+          raise TypeError("El otro objeto debe ser un vector.")
+        
+        if len(self) != len(other):
+          raise ValueError("Los vectores deben tener la misma longitud.")
+        
+        escalar = self @ other / (other @ other)
+        v1paralelo = other * escalar
+        v1perpendicular = self - v1paralelo
+        
+        return v1perpendicular
+
+import doctest
+doctest.testmod(verbose = True)
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 
