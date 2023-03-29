@@ -76,6 +76,8 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
+<img src="testsunitaris.png" width="480" align="center"> 
+
 #### Código desarrollado
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los

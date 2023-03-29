@@ -3,7 +3,7 @@
 
     Nombre y apellidos: Clara Barba Armengol
 """
-
+import math 
 class Vector:
     """
     Clase usada para trabajar con vectores sencillos
@@ -148,6 +148,106 @@ class Vector:
             return sum([other.vector[i] * self.vector[i] for i in range(len(self.vector))])
         else:
             raise TypeError("No és possible multiplicar el vector per aquest objecte")
+
+    def __floordiv__(self, other):
+        """
+        Devuelve
+    >>> v1 = Vector([2, 1, 2]) 
+    >>> v2 = Vector([0.5, 1, 0.5])
+    >>> v3 = v2 // v1
+    >>> print(v3)
+    [1.0, 2.0, 1.0]
+        """
+        if isinstance(other, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")
+            
+            # Calculem direcció tangencial
+            producte_escalar = self @ other
+            modul = math.sqrt(sum([value ** 2 for value in self.vector]))
+            e_tangencial = Vector([self.vector[i] / modul for i in range(len(self.vector))])
+            
+            # Calculem component tangencial del vector
+            component_tangencial = (other @ e_tangencial) * e_tangencial
+            return component_tangencial
+        else:
+            raise TypeError("No és possible multiplicar el vector per aquest objecte")  
+        
+    def __rfloordiv__(self, other):
+        """
+        Devuelve
+    >>> v1 = Vector([2, 1, 2]) 
+    >>> v2 = Vector([0.5, 1, 0.5])
+    >>> v3 = v2 // v1
+    >>> print(v3)
+    [1.0, 2.0, 1.0]
+        """
+        if isinstance(other, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")
+            
+            # Calculem direcció tangencial
+            producte_escalar = self @ other
+            modul = math.sqrt(sum([value ** 2 for value in other.vector]))
+            e_tangencial = Vector([other.vector[i] / modul for i in range(len(other.vector))])
+            
+            # Calculem component tangencial del vector
+            component_tangencial = (self @ e_tangencial) * e_tangencial
+            return component_tangencial
+        else:
+            raise TypeError("No és possible multiplicar el vector per aquest objecte")  
+
+    def __mod__(self, other):
+        """
+        Devuelve
+    >>> v1 = Vector([2, 1, 2]) 
+    >>> v2 = Vector([0.5, 1, 0.5])
+    >>> v3 = v1 % v2
+    >>> print(v3)
+    [1.0, -1.0, 1.0]
+        """
+        if isinstance(other, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")
+            
+            # Calculem direcció tangencial
+            producte_escalar = self @ other
+            modul = math.sqrt(sum([value ** 2 for value in other.vector]))
+            e_tangencial = Vector([other.vector[i] / modul for i in range(len(other.vector))])
+            
+            # Calculem component tangencial i component normal del vector
+            component_tangencial = self // other
+            component_normal = self - component_tangencial
+            
+            return component_normal
+        else:
+            raise TypeError("No és possible calcular el mòdul del vector per aquest objecte")  
+        
+    def __rmod__(self, other):
+        """
+        Devuelve
+    >>> v1 = Vector([2, 1, 2]) 
+    >>> v2 = Vector([0.5, 1, 0.5])
+    >>> v3 = v1 % v2
+    >>> print(v3)
+    [1.0, -1.0, 1.0]
+        """
+        if isinstance(self, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")
+            
+            # Calculem direcció tangencial
+            producte_escalar = other @ self
+            modul = math.sqrt(sum([value ** 2 for value in self.vector]))
+            e_tangencial = Vector([self.vector[i] / modul for i in range(len(self.vector))])
+            
+            # Calculem component tangencial i component normal del vector
+            component_tangencial = other // self
+            component_normal = other - component_tangencial
+            
+            return component_normal
+        else:
+            raise TypeError("No és possible calcular el mòdul del vector per aquest objecte") 
 
 import doctest
 doctest.testmod()
