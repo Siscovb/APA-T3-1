@@ -88,11 +88,8 @@ class Vector:
     def __mul__(self, other):
         """
     Retorna la multiplicació de un vector por un vector (element per element)
-    >>> v1 = Vector([1, 2, 3]) 
-    >>> v2 = Vector([4, 5, 6])
-    >>> v3 = v1 * v2
-    >>> print(v3.vector)
-    [4, 10, 18]
+    >>> Vector([1, 2, 3]) * Vector([4, 5, 6])
+    Vector([4, 10, 18])
             """
         if isinstance(other, Vector):
             if len(self.vector) != len(other.vector):
@@ -105,11 +102,9 @@ class Vector:
     
     def __rmul__(self, other):
         """
-        Devuelve
-    >>> v1 = Vector([1, 2, 3]) 
-    >>> v3 = 2 * v1
-    >>> print(v3.vector)
-    [2, 4, 6]
+        Retorna la multiplicació d'un vector per un escalar
+    >>> 2 * Vector([1, 2, 3]) 
+    Vector([2, 4, 6])
         """
         if isinstance(other, (int, float)):
             return Vector([other * value for value in self.vector])
@@ -119,11 +114,8 @@ class Vector:
     
     def __matmul__(self, other):
         """
-        Devuelve
-    >>> v1 = Vector([1, 2, 3]) 
-    >>> v2 = Vector([4, 5, 6])
-    >>> v3 = v1 @ v2 
-    >>> print(v3)
+        Retorna el producte escalar de dos vectors
+    >>> Vector([1, 2, 3]) @ Vector([4, 5, 6])
     32
         """
         if isinstance(other, Vector):
@@ -133,121 +125,37 @@ class Vector:
         else:
             raise TypeError("No és possible multiplicar el vector per aquest objecte")
     
-    def __rmatmul__(self, other):
-        """
-        Devuelve
-    >>> v1 = Vector([1, 2, 3]) 
-    >>> v2 = Vector([4, 5, 6])
-    >>> v3 = v1 @ v2
-    >>> print(v3)
-    32
-        """
-        if isinstance(other, Vector):
-            if len(self.vector) != len(other.vector):
-                raise ValueError("Els vectors han de tenir la mateixa longitut")
-            return sum([other.vector[i] * self.vector[i] for i in range(len(self.vector))])
-        else:
-            raise TypeError("No és possible multiplicar el vector per aquest objecte")
+    __rmatmul__ = __matmul__  # ja que tenim dues classes vector
 
     def __floordiv__(self, other):
         """
-        Devuelve
-    >>> v1 = Vector([2, 1, 2]) 
-    >>> v2 = Vector([0.5, 1, 0.5])
-    >>> v3 = v2 // v1
-    >>> print(v3)
-    [1.0, 2.0, 1.0]
+        Retorna la component tangencial
+    >>> Vector([2, 1, 2]) // Vector([0.5, 1, 0.5])
+    Vector([1.0, 2.0, 1.0])
         """
         if isinstance(other, Vector):
             if len(self.vector) != len(other.vector):
                 raise ValueError("Els vectors han de tenir la mateixa longitut")
-            
-            # Calculem direcció tangencial
-            producte_escalar = self @ other
-            modul = math.sqrt(sum([value ** 2 for value in self.vector]))
-            e_tangencial = Vector([self.vector[i] / modul for i in range(len(self.vector))])
-            
-            # Calculem component tangencial del vector
-            component_tangencial = (other @ e_tangencial) * e_tangencial
-            return component_tangencial
+            return ((self @ other)/(other @ other)) * other
         else:
             raise TypeError("No és possible multiplicar el vector per aquest objecte")  
         
-    def __rfloordiv__(self, other):
-        """
-        Devuelve
-    >>> v1 = Vector([2, 1, 2]) 
-    >>> v2 = Vector([0.5, 1, 0.5])
-    >>> v3 = v2 // v1
-    >>> print(v3)
-    [1.0, 2.0, 1.0]
-        """
-        if isinstance(other, Vector):
-            if len(self.vector) != len(other.vector):
-                raise ValueError("Els vectors han de tenir la mateixa longitut")
-            
-            # Calculem direcció tangencial
-            producte_escalar = self @ other
-            modul = math.sqrt(sum([value ** 2 for value in other.vector]))
-            e_tangencial = Vector([other.vector[i] / modul for i in range(len(other.vector))])
-            
-            # Calculem component tangencial del vector
-            component_tangencial = (self @ e_tangencial) * e_tangencial
-            return component_tangencial
-        else:
-            raise TypeError("No és possible multiplicar el vector per aquest objecte")  
-
+    __rfloordiv__ = __floordiv__  # ja que tenim dues classes vector
+    
     def __mod__(self, other):
         """
-        Devuelve
-    >>> v1 = Vector([2, 1, 2]) 
-    >>> v2 = Vector([0.5, 1, 0.5])
-    >>> v3 = v1 % v2
-    >>> print(v3)
-    [1.0, -1.0, 1.0]
+        Retorna la component normal
+    >>> Vector([2, 1, 2]) % Vector([0.5, 1, 0.5])
+    Vector([1.0, -1.0, 1.0])
         """
         if isinstance(other, Vector):
             if len(self.vector) != len(other.vector):
-                raise ValueError("Els vectors han de tenir la mateixa longitut")
-            
-            # Calculem direcció tangencial
-            producte_escalar = self @ other
-            modul = math.sqrt(sum([value ** 2 for value in other.vector]))
-            e_tangencial = Vector([other.vector[i] / modul for i in range(len(other.vector))])
-            
-            # Calculem component tangencial i component normal del vector
-            component_tangencial = self // other
-            component_normal = self - component_tangencial
-            
-            return component_normal
+                raise ValueError("Els vectors han de tenir la mateixa longitut")           
+            return self - (self // other)
         else:
             raise TypeError("No és possible calcular el mòdul del vector per aquest objecte")  
         
-    def __rmod__(self, other):
-        """
-        Devuelve
-    >>> v1 = Vector([2, 1, 2]) 
-    >>> v2 = Vector([0.5, 1, 0.5])
-    >>> v3 = v1 % v2
-    >>> print(v3)
-    [1.0, -1.0, 1.0]
-        """
-        if isinstance(self, Vector):
-            if len(self.vector) != len(other.vector):
-                raise ValueError("Els vectors han de tenir la mateixa longitut")
-            
-            # Calculem direcció tangencial
-            producte_escalar = other @ self
-            modul = math.sqrt(sum([value ** 2 for value in self.vector]))
-            e_tangencial = Vector([self.vector[i] / modul for i in range(len(self.vector))])
-            
-            # Calculem component tangencial i component normal del vector
-            component_tangencial = other // self
-            component_normal = other - component_tangencial
-            
-            return component_normal
-        else:
-            raise TypeError("No és possible calcular el mòdul del vector per aquest objecte") 
+    __rmod__ = __mod__  # ja que tenim dues classes vector
 
 import doctest
 doctest.testmod()

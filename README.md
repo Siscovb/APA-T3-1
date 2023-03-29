@@ -84,6 +84,82 @@ Inserte a continuación el código de los métodos desarrollados en esta tarea, 
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
 vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
 
+```python
+    def __mul__(self, other):
+        """
+    Retorna la multiplicació de un vector por un vector (element per element)
+    >>> Vector([1, 2, 3]) * Vector([4, 5, 6])
+    Vector([4, 10, 18])
+            """
+        if isinstance(other, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")
+            return Vector([self.vector[i] * other.vector[i] for i in range(len(self.vector))])
+        elif isinstance(other, (int, float)):
+            return Vector([other * value for value in self.values])
+        else:
+            raise TypeError("No és possible multiplicar el vector per aquest objecte (ha de ser vector * vector)")
+    
+    def __rmul__(self, other):
+        """
+        Retorna la multiplicació d'un vector per un escalar
+    >>> 2 * Vector([1, 2, 3]) 
+    Vector([2, 4, 6])
+        """
+        if isinstance(other, (int, float)):
+            return Vector([other * value for value in self.vector])
+        else:
+            raise TypeError("No és possible multiplicar el vector per aquest objecte (ha de ser vector * escalar)")
+        
+    
+    def __matmul__(self, other):
+        """
+        Retorna el producte escalar de dos vectors
+    >>> Vector([1, 2, 3]) @ Vector([4, 5, 6])
+    32
+        """
+        if isinstance(other, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")
+            return sum([self.vector[i] * other.vector[i] for i in range(len(self.vector))])
+        else:
+            raise TypeError("No és possible multiplicar el vector per aquest objecte")
+    
+    __rmatmul__ = __matmul__  # ja que tenim dues classes vector
+
+    def __floordiv__(self, other):
+        """
+        Retorna la component tangencial
+    >>> Vector([2, 1, 2]) // Vector([0.5, 1, 0.5])
+    Vector([1.0, 2.0, 1.0])
+        """
+        if isinstance(other, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")
+            return ((self @ other)/(other @ other)) * other
+        else:
+            raise TypeError("No és possible multiplicar el vector per aquest objecte")  
+        
+    __rfloordiv__ = __floordiv__  # ja que tenim dues classes vector
+    
+    def __mod__(self, other):
+        """
+        Retorna la component normal
+    >>> Vector([2, 1, 2]) % Vector([0.5, 1, 0.5])
+    Vector([1.0, -1.0, 1.0])
+        """
+        if isinstance(other, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")           
+            return self - (self // other)
+        else:
+            raise TypeError("No és possible calcular el mòdul del vector per aquest objecte")  
+        
+    __rmod__ = __mod__  # ja que tenim dues classes vector
+
+import doctest
+doctest.testmod()
+```
 #### Subida del resultado al repositorio GitHub y *pull-request*
 
 La entrega se formalizará mediante *pull request* al repositorio de la tarea.
