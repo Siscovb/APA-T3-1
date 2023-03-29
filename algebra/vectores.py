@@ -116,6 +116,39 @@ class Vector:
         else:
             raise TypeError("No és possible multiplicar el vector per aquest objecte (ha de ser vector * escalar)")
         
+    
+    def __matmul__(self, other):
+        """
+        Devuelve
+    >>> v1 = Vector([1, 2, 3]) 
+    >>> v2 = Vector([4, 5, 6])
+    >>> v3 = v1 @ v2 
+    >>> print(v3)
+    32
+        """
+        if isinstance(other, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")
+            return sum([self.vector[i] * other.vector[i] for i in range(len(self.vector))])
+        else:
+            raise TypeError("No és possible multiplicar el vector per aquest objecte")
+    
+    def __rmatmul__(self, other):
+        """
+        Devuelve
+    >>> v1 = Vector([1, 2, 3]) 
+    >>> v2 = Vector([4, 5, 6])
+    >>> v3 = v1 @ v2
+    >>> print(v3)
+    32
+        """
+        if isinstance(other, Vector):
+            if len(self.vector) != len(other.vector):
+                raise ValueError("Els vectors han de tenir la mateixa longitut")
+            return sum([other.vector[i] * self.vector[i] for i in range(len(self.vector))])
+        else:
+            raise TypeError("No és possible multiplicar el vector per aquest objecte")
+
 import doctest
 doctest.testmod()
     
