@@ -133,7 +133,7 @@ class Vector:
         >>> v1 // v2
         Vector([1.0, 2.0, 1.0])
         """
-        return (((self @ other) / (sum(item ** 2 for item in other))) * other)           
+        return (((self @ other) / (other @ other)) * other)    #sum(item ** 2 for item in other) == other@other
     
     __rfloordiv__ = __floordiv__
 
