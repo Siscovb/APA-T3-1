@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Victor Ceballos Fouces
 """
 
 class Vector:
@@ -84,4 +84,88 @@ class Vector:
         """
 
         return -self + other
+    
+    def __mul__(self, other):
+        """
+        Multiplica el vector por otro vector usando el producto de Hadamard, o por un escalar.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v3 = v1 * v2
+        >>> v3
+        Vector([4, 10, 18])
+        """
+        if isinstance(other, (int, float, complex)):
+            return Vector(uno * other for uno in self)
+        else:
+            return Vector(uno * otro for uno, otro in zip(self, other))
 
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Realiza el producto escalar entre dos vectores.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v3 = v1 @ v2
+        >>> v3
+        32
+        """
+        if not isinstance(other, Vector):
+            raise TypeError("El operando debe ser un objeto de la clase Vector")
+
+        if len(self) != len(other):
+            raise ValueError("Los vectores deben tener la misma longitud")
+
+        resultado = 0
+        for x, y in zip(self.vector, other.vector):
+            resultado += x * y
+
+        return resultado
+
+    __rmatmul__ = __matmul__ 
+
+    def __floordiv__(self, other):
+        """
+        Retorna la componente tangencial de self respecto a other.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v3 = v1 // v2
+        >>> v3
+        Vector([1.0, 2.0, 1.0])
+        """
+        if not isinstance(other, Vector):
+            raise TypeError("El argumento debe ser un vector.")
+
+        v1 = self
+        v2 = other
+        v2_norma_cuadrado = sum(componente ** 2 for componente in v2)
+        producto_escalar = sum(v1[i] * v2[i] for i in range(len(v1)))
+        tangencial = v2 * (producto_escalar / v2_norma_cuadrado)
+
+        return tangencial
+    
+    
+    def __mod__(self, other):
+        """
+        Devuelve la componente normal de v1 perpendicular a v2.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v3 = v1 % v2
+        >>> v3
+        Vector([1.0, -1.0, 1.0])
+        """
+        
+        if not isinstance(other, Vector):
+          raise TypeError("El otro objeto debe ser un vector.")
+        
+        if len(self) != len(other):
+          raise ValueError("Los vectores deben tener la misma longitud.")
+        
+        escalar = self @ other / (other @ other)
+        v1paralelo = other * escalar
+        v1perpendicular = self - v1paralelo
+        
+        return v1perpendicular
+
+import doctest
+doctest.testmod(verbose = True)
