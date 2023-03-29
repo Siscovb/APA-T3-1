@@ -1,6 +1,6 @@
 # Tercera tarea de APA 2023: Multiplicaciones de vectores y ortogonalidad
 
-## Nom i cognoms
+## Nom i cognoms:  Paula Puigdevall Tornero
 
 El fichero `algebra/vectores.py` incluye la definición de la clase `Vector` con los
 métodos desarrollados en clase, que incluyen la construcción, representación y
@@ -76,11 +76,60 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
+<img src="testsTasca3.jpg" width="480" align="center">
+
 #### Código desarrollado
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
 vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
+```python
+# Tasca 3, part 1:
+
+    def __mul__(self, other):
+        """
+        Mètode per multiplicar el vector per un altre vector o un escalar
+        """
+
+        if isinstance(other, (int, float, complex)):         # Per determinar amb quin tipus de valor estem operant
+            return Vector(uno * other for uno in self)
+        else:
+            return Vector(uno * otro for uno, otro in zip(self, other))  # Multipliquem nombre per nombre entrellaçant-los amb zip()
+        
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Mètode per implementar el producte escalar de dos vectors
+        """
+        if len(self) != len(other):
+            return('Els vectors no tenen la mateixa longitud')   # Mirem que els dos vectors tinguin la mateixa longitud.
+        else:                                                    # Quan no tenen la mateixa longitud la funció no opera amb els nombres que sobren.
+            return sum(self * other for self, other in zip(self, other))
+    
+    __rmatmul__ = __matmul__
+
+    # Obtenció de components normal i paralela
+
+    def __floordiv__(self, other):
+        """
+        Mètode que retorna la component tangencial d'un vector implementant l'operador //
+        """ 
+        return (((self @ other)/(other @ other))* other)  
+    
+
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Mètode que retorna la component normal d'un vector implementant l'operador % 
+        """ 
+        return (self - (self // other))
+
+
+    __rmod__ = __mod__
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 

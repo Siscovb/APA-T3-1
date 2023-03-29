@@ -2,6 +2,28 @@
     Tercera tarea de APA - manejo de vectores
 
     Nombre y apellidos:
+    Paula Puigdevall Tornero
+
+    Exemples test:
+
+    >>> v1 = Vector([1, 2, 3])
+    >>> v2 = Vector([4, 5, 6])
+
+    >>> v1 * 2
+    Vector([2, 4, 6])
+    >>> v1 * v2
+    Vector([4, 10, 18])
+    
+    >>> v1 @ v2
+    32
+
+    >>> v1 = Vector([2, 1, 2])
+    >>> v2 = Vector([0.5, 1, 0.5])
+
+    >>> v1 // v2
+    Vector([1.0, 2.0, 1.0])
+    >>> v1 % v2
+    Vector([1.0, -1.0, 1.0])
 """
 
 class Vector:
@@ -84,4 +106,52 @@ class Vector:
         """
 
         return -self + other
+    
+# Tasca 3, part 1:
+
+    def __mul__(self, other):
+        """
+        Mètode per multiplicar el vector per un altre vector o un escalar
+        """
+
+        if isinstance(other, (int, float, complex)):         # Per determinar amb quin tipus de valor estem operant
+            return Vector(uno * other for uno in self)
+        else:
+            return Vector(uno * otro for uno, otro in zip(self, other))  # Multipliquem nombre per nombre entrellaçant-los amb zip()
+        
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Mètode per implementar el producte escalar de dos vectors
+        """
+        if len(self) != len(other):
+            return('Els vectors no tenen la mateixa longitud')   # Mirem que els dos vectors tinguin la mateixa longitud.
+        else:                                                    # Quan no tenen la mateixa longitud la funció no opera amb els nombres que sobren.
+            return sum(self * other for self, other in zip(self, other))
+    
+    __rmatmul__ = __matmul__
+
+    # Obtenció de components normal i paralela
+
+    def __floordiv__(self, other):
+        """
+        Mètode que retorna la component tangencial d'un vector implementant l'operador //
+        """ 
+        return (((self @ other)/(other @ other))* other)  
+    
+
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Mètode que retorna la component normal d'un vector implementant l'operador % 
+        """ 
+        return (self - (self // other))
+
+
+    __rmod__ = __mod__
+   
+import doctest
+doctest.testmod()
 
