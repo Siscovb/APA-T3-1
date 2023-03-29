@@ -88,9 +88,9 @@ class Vector:
    
     def __mul__(self, other):
         """
-        Multiplica dos vectores.
-        >>> v1 = Vector[1, 2, 3]
-        >>> v2 = Vector[4, 5, 6]
+        Multiplica dos vectores por un escalar o otro vector posición por posición.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
         >>> v1 * 2
         Vector([2, 4, 6])
         >>> v1 * v2
@@ -103,15 +103,20 @@ class Vector:
     
     __rmul__ = __mul__  
 
+
     def __matmul__(self, other):
         """
         Multiplicación matricial de dos vectores.
-        >>> __rmul__(v1 = Vector([1, 2, 3]), v2 = Vector([4, 5, 6]))
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
         32
         """
-        return sum(uno @ otro for uno, otro in zip(self, other))
+        return sum(uno * otro for uno, otro in zip(self, other))
     
     __rmatmul__ = __matmul__
+
+
     
 
 import doctest
