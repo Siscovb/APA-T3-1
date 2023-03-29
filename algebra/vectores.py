@@ -96,7 +96,10 @@ class Vector:
         >>> v1 * v2
         Vector([4, 10, 18])
         """
-        return Vector([uno * other for uno in self])
+        if isinstance(other, (int, float, complex)):
+            return Vector([uno * other for uno in self])
+        else:
+            return Vector([uno * otro for uno, otro in zip(self, other)])
     
     __rmul__ = __mul__  
 
