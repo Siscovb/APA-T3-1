@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: PAU PERÁLVAREZ CASASAMPERE
 """
 
 class Vector:
@@ -10,7 +10,7 @@ class Vector:
     """
     def __init__(self, iterable):
         """
-        Costructor de la clase Vector. Su único argumento es un iterable con las componentes del vector.
+        Constructor de la clase Vector. Su único argumento es un iterable con las componentes del vector.
         """
 
         self.vector = [valor for valor in iterable]
@@ -84,4 +84,72 @@ class Vector:
         """
 
         return -self + other
+    
+    
+# COMENÇA PRÀCTICA #
 
+    def __mul__(self, other):
+        """
+        Implementación del producto de Hadamard 
+        (vector formado por la multiplicación elemento a elemento de dos vectores) 
+        o la multiplicación de un vector por un escalar.
+       
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+
+        """    
+        if isinstance(other, (int, float, complex)):
+            return Vector([item * other for item in self])
+        else:
+            return Vector([item1 * item2 for item1, item2 in zip(self, other)])
+    
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Método para calcular la multiplicación matricial
+        (Producto escalar de 2 vectores)
+
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+
+        """
+        return sum(self * other)
+    
+    __rmatmul__ = __matmul__
+
+    def __floordiv__(self, other):
+        """
+        Método para calcular la componente tangencial de un vector
+    
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        """
+        return (((self @ other) / (other @ other)) * other)    #sum(item ** 2 for item in other) == other@other
+    
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Método para calcular la componente normal de un vector
+        
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+        return (self - (self // other))
+
+    __rmod__ = __mod__
+
+
+import doctest
+doctest.testmod()
