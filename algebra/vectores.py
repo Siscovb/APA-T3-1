@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Gerard Escardó Cabrerizo
 """
 
 class Vector:
@@ -84,4 +84,65 @@ class Vector:
         """
 
         return -self + other
+    
+   
+    def __mul__(self, other):
+        """
+        Multiplica dos vectores por un escalar o otro vector posición por posición.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+        """
+        if isinstance(other, (int, float, complex)):
+            return Vector([uno * other for uno in self])
+        else:
+            return Vector([uno * otro for uno, otro in zip(self, other)])
+    
+    __rmul__ = __mul__  
 
+
+    def __matmul__(self, other):
+        """
+        Multiplicación matricial de dos vectores.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        """
+        return sum(uno * otro for uno, otro in zip(self, other))
+    
+    __rmatmul__ = __matmul__
+
+
+    def __floordiv__(self,other):
+        """
+        Componente tangencial de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        """
+        
+        return Vector(other * ((self @ other) / (other @ other)))
+
+    __rfloordiv__ = __floordiv__
+
+    
+    def __mod__(self, other):
+        """
+        Componente normal de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+        return (self - (self // other))
+    
+    __rmod__ = __mod__
+
+
+import doctest
+doctest.testmod()
