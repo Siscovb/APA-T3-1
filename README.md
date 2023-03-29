@@ -59,6 +59,30 @@ $v_2$, y $v_1^\perp$ es normal (perpendicular) a $v_2$.
 
 ### Entrega
 
+
+#### Fichero `algebra/vectores.py`
+
+- El fichero debe incluir una cadena de documentación que incluirá el nombre del alumno
+  y los tests unitarios de las funciones incluidas.
+
+- Cada función deberá incluir su propia cadena de documentación que indicará el cometido
+  de la función, los argumentos de la misma y la salida proporcionada.
+
+- Se valorará lo pythónico de la solución; en concreto, su claridad y sencillez, y el
+  uso de los estándares marcados por PEP-ocho.
+
+#### Ejecución de los tests unitarios
+
+Inserte a continuación una captura de pantalla que muestre el resultado de ejecutar el
+fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
+resultado de la ejecución de los tests unitarios.
+
+#### Código desarrollado
+
+Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
+comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
+vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
 ````python
     def __mul__(self, other):
         """
@@ -104,28 +128,6 @@ $v_2$, y $v_1^\perp$ es normal (perpendicular) a $v_2$.
 
 ````
 
-#### Fichero `algebra/vectores.py`
-
-- El fichero debe incluir una cadena de documentación que incluirá el nombre del alumno
-  y los tests unitarios de las funciones incluidas.
-
-- Cada función deberá incluir su propia cadena de documentación que indicará el cometido
-  de la función, los argumentos de la misma y la salida proporcionada.
-
-- Se valorará lo pythónico de la solución; en concreto, su claridad y sencillez, y el
-  uso de los estándares marcados por PEP-ocho.
-
-#### Ejecución de los tests unitarios
-
-Inserte a continuación una captura de pantalla que muestre el resultado de ejecutar el
-fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
-resultado de la ejecución de los tests unitarios.
-
-#### Código desarrollado
-
-Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
-comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
-vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 
