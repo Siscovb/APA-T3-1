@@ -3,7 +3,31 @@
 
     Nombre y apellidos:
     Albert Giménez
+
+Exemples:
+
+>>> v1 = Vector([1, 2, 3])
+>>> v2 = Vector([4, 5, 6])
+>>> v1 * v2
+Vector([4, 10, 18])
+
+>>> v1 * 2
+Vector([2, 4, 6])
+
+>>> v1 @ v2
+32
+
+>>> v1 = Vector([2, 1, 2])
+>>> v2 = Vector([0.5, 1, 0.5])
+>>> v1 // v2
+Vector([1.0, 2.0, 1.0])
+
+>>> v1 % v2
+Vector([1.0, -1.0, 1.0])
+    
+    
 """
+
 
 class Vector:
     """
@@ -85,4 +109,55 @@ class Vector:
         """
 
         return -self + other
+    
+    def __mul__(self, other):
+        """
+        Método que ejecuta el producto de Hadamard (vector formado por la multiplicación elemento a elemento de dos vectores) o la multiplicación de un vector por un escalar.
+        """
+        if isinstance(other, Vector):
+             return Vector(uno * otro for uno, otro in zip(self, other))
+        if isinstance(other, (int, float, complex)):
+            return Vector(uno * other for uno in self)
+    
+
+    
+    __rmul__ = __mul__
+    
+    def __matmul__(self, other):
+        """
+        Método que ejecuta el producto matricial entre dos vectores.
+        """
+
+        return sum(self * other)
+    
+    __rmatmul__ = __matmul__
+    
+    def __floordiv__(self, other):
+        """
+        Método que devuelve la componente tangencial del primer vector sobre el segundo
+        """
+
+        mod = sum(list(item ** 2 for item in other)) **(-1)
+        return ((self @ other) * mod) * other
+
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Método que devuelve la componente normal del primer vector sobre el segundo
+        """
+
+        return self - (self // other)
+    
+    __rmod__ = __mod__
+
+        
+    
+        
+
+import doctest
+doctest.testmod()
+
+        
+        
 
