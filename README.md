@@ -69,18 +69,118 @@ $v_2$, y $v_1^\perp$ es normal (perpendicular) a $v_2$.
 
 - Se valorará lo pythónico de la solución; en concreto, su claridad y sencillez, y el
   uso de los estándares marcados por PEP-ocho.
+<br> <br> 
 
 #### Ejecución de los tests unitarios
 
 Inserte a continuación una captura de pantalla que muestre el resultado de ejecutar el
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
-resultado de la ejecución de los tests unitarios.
+resultado de la ejecución de los tests unitarios. 
 
+
+### Tests unitarios:
+<img src="tests_unitarios.PNG" width="450" align="center">
+
+<br> <br>
 #### Código desarrollado
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
-vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*). 
+<br> <br>
+
+## MÉTODOS NUEVOS:
+### Argumentos utilizados <br>
+self --> Es el propio vector (él mismo). <br>
+other --> Es otro vector realizando la propia operación.
+<br>
+
+### Tests:
+```python
+    >>> Vector([1, 2, 3]) * 2 
+    Vector([2, 4, 6])
+   
+    >>> 2 * Vector([1, 2, 3])
+    Vector([2, 4, 6])
+   
+    >>> Vector([1, 2, 3]) * Vector([4, 5, 6])
+    Vector([4, 10, 18])
+    
+    >>> Vector([1, 2, 3]) @ Vector([4, 5, 6])
+    32
+    
+    >>> Vector([2, 1, 2]) // Vector([0.5, 1, 0.5])
+    Vector([1.0, 2.0, 1.0])
+    
+    >>> Vector([2, 1, 2]) % Vector([0.5, 1, 0.5])
+    Vector([1.0, -1.0, 1.0])
+```
+
+
+### Método __mul__:
+```python
+def __mul__(self, other):
+        '''
+        Funcion para multiplicar un vector con otro vector o vector por escalar
+        '''
+        if isinstance(other,(int, float, complex)):
+            return Vector([valor * other for valor in self])
+        else:
+            return Vector([valor * other for valor, other in zip(self, other)])
+
+    __rmul__ = __mul__
+```
+
+### Método __matmul__:
+```python
+    def __matmul__(self, other):
+        '''
+        Funcion para calcular el producto escalar de dos vectores
+        '''
+        v = Vector([valor * otro for valor, otro in zip(self, other)])
+        pr_escalar = 0
+        for i in range(len(v)):
+            pr_escalar += v[i]
+        return pr_escalar
+
+    __rmatmul__ = __matmul__
+```
+
+### Método __floordiv__:
+```python
+    def __floordiv__(self, other):
+        '''
+        Función para calcular la componente tangencial de un vector
+        '''
+        return ((self @ other) / (other @ other)) * other
+```
+
+### Método __rfloordiv__:
+```python
+    def __rfloordiv__(self, other):
+        '''
+        Función para calcular la componente tangencial de un vector
+        '''
+        return ((other @ self) / (self @ self)) * self
+```
+
+### Método __mod__:
+```python
+def __mod__(self, other):
+        '''
+        Función para calcular la componente normal de un vector
+        '''
+        return self - (self // other)
+```
+
+### Método __rmod__:
+```python
+    def __rmod__(self, other):
+        '''
+        Función para calcular la componente normal de un vector
+        '''
+        return other - (other // self)
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 
