@@ -117,7 +117,32 @@ class Vector:
     __rmatmul__ = __matmul__
 
 
+    def __floordiv__(self,other):
+        """
+        Componente tangencial de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        """
+        
+        return Vector(other * ((self @ other) / (other @ other)))
+
+    __rfloordiv__ = __floordiv__
+
     
+    def __mod__(self, other):
+        """
+        Componente normal de un vector
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+        return (self - (self // other))
+    
+    __rmod__ = __mod__
+
 
 import doctest
 doctest.testmod()
