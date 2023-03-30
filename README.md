@@ -1,6 +1,6 @@
 # Tercera tarea de APA 2023: Multiplicaciones de vectores y ortogonalidad
 
-## Nom i cognoms
+## Sonia Camba Rodríguez
 
 El fichero `algebra/vectores.py` incluye la definición de la clase `Vector` con los
 métodos desarrollados en clase, que incluyen la construcción, representación y
@@ -16,9 +16,33 @@ tests unitarios.
   la multiplicación elemento a elemento de dos vectores) o la multiplicación de un
   vector por un escalar.
 
-  - La prueba unitaria consistirá en comprobar que, dados `v1 = Vector([1, 2, 3])` y
-    `v2 = Vector([4, 5, 6])`, la multiplicación de `v1` por `2` es `Vector([2, 4, 6])`,
-    y el producto de Hadamard de `v1` por `v2` es `Vector([4, 10, 18])`.
+- La prueba unitaria consistirá en comprobar que, dados `v1 =    Vector([1, 2, 3])` y
+  `v2 = Vector([4, 5, 6])`, la multiplicación de `v1` por `2` es `Vector([2, 4, 6])`,
+  y el producto de Hadamard de `v1` por `v2` es `Vector([4, 10, 18])`.
+
+```python
+def __mul__(self, other):
+  """
+  Devuelve un vector formado por la multiplicación elemento a elemento de dos vectores
+  
+  >>> v1 = Vector([1, 2, 3])
+  >>> v2 = Vector([4, 5, 6]) 
+
+  >>> v1*2
+  Vector([2, 4, 6])
+
+  >>> v1*v2
+  Vector([4, 10, 18])
+  """
+
+  if isinstance(other, (int, float, complex)):
+      return Vector(uno * other for uno in self)
+  else:
+      return Vector(uno * otro for uno, otro in zip(self, other))
+
+__rmul__ = __mul__
+
+```
 
 - Sobrecargue el operador arroba (`@`, multiplicación matricial, correspondiente a los
   métodos `__matmul__()`, `__rmatmul__()`, etc.) para implementar el producto escalar
@@ -26,6 +50,10 @@ tests unitarios.
 
   - La prueba unitaria consistirá en comprobar que el producto escalar de los dos
     vectores `v1` y `v2` del apartado anterior es igual a `32`.
+
+```python
+
+```
 
 ### Obtención de las componentes normal y paralela de un vector respecto a otro
 
@@ -41,8 +69,48 @@ $v_2$, y $v_1^\perp$ es normal (perpendicular) a $v_2$.
 - Sobrecargue el operador doble barra inclinada (`//`, métodos `__floordiv__()`,
   `__rfloordiv__()`, etc.) para que devuelva la componente tangencial $v_1^\parallel$.
 
+```python
+def __floordiv__(self, other):
+    """
+    Devuelva la componente tangencial de v1
+
+    >>> v1 = Vector([2, 1, 2])
+    >>> v2 = Vector([0.5, 1, 0.5]) 
+
+    >>> v1//v2
+    Vector([1.0, 2.0, 1.0])
+    """
+
+    if isinstance(other, Vector):
+        return Vector(((uno*otro)/otro**2)*otro for uno, otro in zip(self, other))
+    else:
+        return 'Error : solo se puede hacer con dos vectores'
+    
+__rfloordiv__ = __floordiv__
+```
+
 - Sobrecargue el operador tanto por ciento (`%`, métodos `__mod__()`, `__rmod__()`, etc.)
   para que devuelva la componente normal $v_1^\perp$.
+
+```python
+def __mod__(self, other):
+    """
+    Devuelva la componente normal de v1
+
+    >>> v1 = Vector([2, 1, 2])
+    >>> v2 = Vector([0.5, 1, 0.5]) 
+
+    >>> v1%v2
+    Vector([1.0, -1.0, 1.0])
+    """
+
+    if isinstance(other, Vector):
+        return Vector(uno - (self//other)  for uno in self)
+    else:
+        return 'Error : solo se puede hacer con dos vectores'
+    
+__rmod__ = __mod__
+```
 
 > Es discutible esta elección de las sobrecargas, dado que extraer la componente
 > tangencial no es equivalente a ningún tipo de división. Sin embargo, está
