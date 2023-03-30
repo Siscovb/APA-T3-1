@@ -1,6 +1,6 @@
 # Tercera tarea de APA 2023: Multiplicaciones de vectores y ortogonalidad
 
-## Nom i cognoms
+## Sonia Camba Rodríguez
 
 El fichero `algebra/vectores.py` incluye la definición de la clase `Vector` con los
 métodos desarrollados en clase, que incluyen la construcción, representación y
@@ -16,9 +16,9 @@ tests unitarios.
   la multiplicación elemento a elemento de dos vectores) o la multiplicación de un
   vector por un escalar.
 
-  - La prueba unitaria consistirá en comprobar que, dados `v1 = Vector([1, 2, 3])` y
-    `v2 = Vector([4, 5, 6])`, la multiplicación de `v1` por `2` es `Vector([2, 4, 6])`,
-    y el producto de Hadamard de `v1` por `v2` es `Vector([4, 10, 18])`.
+- La prueba unitaria consistirá en comprobar que, dados `v1 =    Vector([1, 2, 3])` y
+  `v2 = Vector([4, 5, 6])`, la multiplicación de `v1` por `2` es `Vector([2, 4, 6])`,
+  y el producto de Hadamard de `v1` por `v2` es `Vector([4, 10, 18])`.
 
 - Sobrecargue el operador arroba (`@`, multiplicación matricial, correspondiente a los
   métodos `__matmul__()`, `__rmatmul__()`, etc.) para implementar el producto escalar
@@ -75,12 +75,118 @@ $v_2$, y $v_1^\perp$ es normal (perpendicular) a $v_2$.
 Inserte a continuación una captura de pantalla que muestre el resultado de ejecutar el
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
+## test **mul** :
+<img src="test_mul.png" width="640" align="center">
+
+## test **matmul** :
+<img src="test_matmul.png" width="640" align="center">
+
+## test **floordiv** :
+<img src="test_floordiv.png" width="640" align="center">
+
+## test **mod** :
+<img src="test_mod.png" width="640" align="center">
+
+## general :
+<img src="resumen.png" width="640" align="center">
 
 #### Código desarrollado
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
 vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
+## Función **mul** :
+
+```python
+def __mul__(self, other):
+      """
+      Devuelve un vector formado por la multiplicación elemento a elemento de dos vectores
+      
+      >>> v1 = Vector([1, 2, 3])
+      >>> v2 = Vector([4, 5, 6]) 
+
+      >>> v1*2
+      Vector([2, 4, 6])
+
+      >>> v1*v2
+      Vector([4, 10, 18])
+      """
+
+      if isinstance(other, Vector):
+          return Vector(uno * otro for uno, otro in zip(self, other))
+      else:
+          return Vector(uno * other for uno in self)
+  
+  __rmul__ = __mul__
+```
+
+## Función **matmul** :
+
+```python
+  def __matmul__(self, other):
+      """
+      Implementa el producto escalar de dos vectores.
+
+      >>> v1 = Vector([1, 2, 3])
+      >>> v2 = Vector([4, 5, 6]) 
+
+      >>> v1@v2
+      32
+      """
+
+      if isinstance(other, Vector):
+          return sum(uno * otro for uno, otro in zip(self, other))
+      else:
+          return 'Error : solo se puede hacer con dos vectores'
+  
+  
+  __rmatmul__ = __matmul__
+```
+
+## Función **floordiv** :
+
+```python
+  def __floordiv__(self, other):
+      """
+      Devuelva la componente tangencial de v1
+
+      >>> v1 = Vector([2, 1, 2])
+      >>> v2 = Vector([0.5, 1, 0.5]) 
+
+      >>> v1//v2
+      Vector([1.0, 2.0, 1.0])
+      """
+
+      if isinstance(other, Vector):
+          return ((self@other)/(other@other))*other
+      else:
+          return 'Error : solo se puede hacer con dos vectores'
+      
+  __rfloordiv__ = __floordiv__
+```
+
+## Función **mod** :
+
+```python
+  def __mod__(self, other):
+      """
+      Devuelva la componente normal de v1
+
+      >>> v1 = Vector([2, 1, 2])
+      >>> v2 = Vector([0.5, 1, 0.5]) 
+
+      >>> v1%v2
+      Vector([1.0, -1.0, 1.0])
+      """
+
+      if isinstance(other, Vector):
+          return (self - (self//other))
+      else:
+          return 'Error : solo se puede hacer con dos vectores'
+      
+  __rmod__ = __mod__
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 

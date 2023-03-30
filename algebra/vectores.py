@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Sonia Camba Rodríguez
 """
 
 class Vector:
@@ -84,4 +84,84 @@ class Vector:
         """
 
         return -self + other
+    
+    def __mul__(self, other):
+        """
+        Devuelve un vector formado por la multiplicación elemento a elemento de dos vectores
+        
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6]) 
+
+        >>> v1*2
+        Vector([2, 4, 6])
+
+        >>> v1*v2
+        Vector([4, 10, 18])
+        """
+
+        if isinstance(other, Vector):
+            return Vector(uno * otro for uno, otro in zip(self, other))
+        else:
+            return Vector(uno * other for uno in self)
+    
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Implementa el producto escalar de dos vectores.
+
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6]) 
+
+        >>> v1@v2
+        32
+        """
+
+        if isinstance(other, Vector):
+            return sum(uno * otro for uno, otro in zip(self, other))
+        else:
+            return 'Error : solo se puede hacer con dos vectores'
+    
+    
+    __rmatmul__ = __matmul__
+
+    def __floordiv__(self, other):
+        """
+        Devuelva la componente tangencial de v1
+
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5]) 
+
+        >>> v1//v2
+        Vector([1.0, 2.0, 1.0])
+        """
+
+        if isinstance(other, Vector):
+            return ((self@other)/(other@other))*other
+        else:
+            return 'Error : solo se puede hacer con dos vectores'
+        
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Devuelva la componente normal de v1
+
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5]) 
+
+        >>> v1%v2
+        Vector([1.0, -1.0, 1.0])
+        """
+
+        if isinstance(other, Vector):
+            return (self - (self//other))
+        else:
+            return 'Error : solo se puede hacer con dos vectores'
+        
+    __rmod__ = __mod__
+
+import doctest
+doctest.testmod()
+    
 
