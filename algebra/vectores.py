@@ -99,10 +99,10 @@ class Vector:
         Vector([4, 10, 18])
         """
 
-        if isinstance(other, (int, float, complex)):
-            return Vector(uno * other for uno in self)
-        else:
+        if isinstance(other, Vector):
             return Vector(uno * otro for uno, otro in zip(self, other))
+        else:
+            return Vector(uno * other for uno in self)
     
     __rmul__ = __mul__
 
@@ -137,7 +137,7 @@ class Vector:
         """
 
         if isinstance(other, Vector):
-            return Vector(((self@other/other@other)*other))
+            return ((self@other)/(other@other))*other
         else:
             return 'Error : solo se puede hacer con dos vectores'
         
@@ -155,7 +155,7 @@ class Vector:
         """
 
         if isinstance(other, Vector):
-            return Vector(sum(uno - (self//other))  for uno in self)
+            return (self - (self//other))
         else:
             return 'Error : solo se puede hacer con dos vectores'
         
