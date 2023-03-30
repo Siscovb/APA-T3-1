@@ -137,7 +137,7 @@ class Vector:
         """
 
         if isinstance(other, Vector):
-            return Vector(((uno*otro)/otro**2)*otro for uno, otro in zip(self, other))
+            return Vector(((self@other/other@other)*other))
         else:
             return 'Error : solo se puede hacer con dos vectores'
         
@@ -155,7 +155,7 @@ class Vector:
         """
 
         if isinstance(other, Vector):
-            return Vector(uno - (self//other)  for uno in self)
+            return Vector(sum(uno - (self//other))  for uno in self)
         else:
             return 'Error : solo se puede hacer con dos vectores'
         
