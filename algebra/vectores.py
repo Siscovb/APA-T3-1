@@ -135,6 +135,8 @@ class Vector:
         Vector([1.0, -1.0, 1.0])
         """
         return Vector(self - (self // other))
+    
+    __rmod__ = __mod__
 
 import doctest
 doctest.testmod()
