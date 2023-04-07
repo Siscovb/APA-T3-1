@@ -136,6 +136,8 @@ vale insertar una imagen o una captura de pantalla, debe hacerse en formato *mar
         """
         return Vector(self - (self // other))
 
+    __rmod__ = __mod__
+
 import doctest
 doctest.testmod()
 ```
