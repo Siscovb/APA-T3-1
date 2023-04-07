@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Alexandr Ramos
 """
 
 class Vector:
@@ -114,15 +114,27 @@ class Vector:
     
     __rmatmul__ = __matmul__
 
-    def __floordiv__(self, other): ###############################################
+    def __floordiv__(self, other): 
         """
-        Devuelva la componente tangencial.
+       Devuelve la componente tangencial.
         >>> v1 = Vector([2, 1, 2])
         >>> v2 = Vector([0.5, 1, 0.5])
         >>> v1 // v2
         Vector([1.0, 2.0, 1.0])
         """
-        return Vector([v * __matmul__(self, other) / sum(uno**2 for uno in other) for uno in other])
+        return  Vector((self @ other) // ((other @ other)) * other)
+    
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Devuelve la componente normal
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+        return Vector(self - (self // other))
 
 import doctest
 doctest.testmod()
