@@ -1,6 +1,6 @@
 # Tercera tarea de APA 2023: Multiplicaciones de vectores y ortogonalidad
 
-## Nom i cognoms
+## Nom i cognoms: Alexandr Ramos
 
 El fichero `algebra/vectores.py` incluye la definición de la clase `Vector` con los
 métodos desarrollados en clase, que incluyen la construcción, representación y
@@ -76,11 +76,71 @@ Inserte a continuación una captura de pantalla que muestre el resultado de ejec
 fichero `algebra/vectores.py` con la opción *verbosa*, de manera que se muestre el
 resultado de la ejecución de los tests unitarios.
 
+<img src="img/Capture.PNG" align="center">
+
 #### Código desarrollado
 
 Inserte a continuación el código de los métodos desarrollados en esta tarea, usando los
 comandos necesarios para que se realice el realce sintáctico en Python del mismo (no
 vale insertar una imagen o una captura de pantalla, debe hacerse en formato *markdown*).
+
+```python
+    def __mul__(self, other):
+        """
+        Producto de Hadamard (vector formado por la multiplicación elemento a elemento de dos vectores) o la multiplicación de un vector por un escalar.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+        """
+        if isinstance(other, (int, float, complex)):        #Mult escalar
+            return Vector(uno * other for uno in self)      
+        else:                                               #Mult Hadamard
+            return Vector(uno * otro for uno, otro in zip(self, other))
+        
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Producto escalar de dos vectores.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        """
+        return sum(uno * otro for uno, otro in zip(self, other))
+    
+    __rmatmul__ = __matmul__
+
+    def __floordiv__(self, other): 
+        """
+       Devuelve la componente tangencial.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        """
+        return  Vector((self @ other) // ((other @ other)) * other)
+    
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Devuelve la componente normal
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+        return Vector(self - (self // other))
+
+    __rmod__ = __mod__
+
+import doctest
+doctest.testmod()
+```
 
 #### Subida del resultado al repositorio GitHub y *pull-request*
 

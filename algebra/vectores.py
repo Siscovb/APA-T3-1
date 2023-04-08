@@ -1,7 +1,7 @@
 """
     Tercera tarea de APA - manejo de vectores
 
-    Nombre y apellidos:
+    Nombre y apellidos: Alexandr Ramos
 """
 
 class Vector:
@@ -85,3 +85,58 @@ class Vector:
 
         return -self + other
 
+    def __mul__(self, other):
+        """
+        Producto de Hadamard (vector formado por la multiplicación elemento a elemento de dos vectores) o la multiplicación de un vector por un escalar.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 * 2
+        Vector([2, 4, 6])
+        >>> v1 * v2
+        Vector([4, 10, 18])
+        """
+        if isinstance(other, (int, float, complex)):        #Mult escalar
+            return Vector(uno * other for uno in self)      
+        else:                                               #Mult Hadamard
+            return Vector(uno * otro for uno, otro in zip(self, other))
+        
+    __rmul__ = __mul__
+
+    def __matmul__(self, other):
+        """
+        Producto escalar de dos vectores.
+        >>> v1 = Vector([1, 2, 3])
+        >>> v2 = Vector([4, 5, 6])
+        >>> v1 @ v2
+        32
+        """
+        return sum(uno * otro for uno, otro in zip(self, other))
+    
+    __rmatmul__ = __matmul__
+
+    def __floordiv__(self, other): 
+        """
+       Devuelve la componente tangencial.
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 // v2
+        Vector([1.0, 2.0, 1.0])
+        """
+        return  Vector((self @ other) // ((other @ other)) * other)
+    
+    __rfloordiv__ = __floordiv__
+
+    def __mod__(self, other):
+        """
+        Devuelve la componente normal
+        >>> v1 = Vector([2, 1, 2])
+        >>> v2 = Vector([0.5, 1, 0.5])
+        >>> v1 % v2
+        Vector([1.0, -1.0, 1.0])
+        """
+        return Vector(self - (self // other))
+    
+    __rmod__ = __mod__
+
+import doctest
+doctest.testmod()
